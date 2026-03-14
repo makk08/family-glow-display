@@ -5,6 +5,7 @@ import CalendarWidget from "@/components/dashboard/CalendarWidget";
 import TodoWidget from "@/components/dashboard/TodoWidget";
 import SpotifyWidget from "@/components/dashboard/SpotifyWidget";
 import SmartHomeWidget from "@/components/dashboard/SmartHomeWidget";
+import NextBusWidget from "@/components/dashboard/NextBusWidget";
 
 const Index = () => {
   return (
@@ -28,12 +29,11 @@ const Index = () => {
         </div>
       </section>
 
-      {/* L3: The Controls — Spotify + Smart Home */}
+      {/* L3: The Controls — Spotify + Smart Home + Next Bus */}
       <section className="col-span-3 flex flex-col gap-6">
         <SpotifyWidget />
-        <div className="flex-1">
-          <SmartHomeWidget />
-        </div>
+        <SmartHomeWidget />
+        <NextBusWidget />
       </section>
     </div>
   );
