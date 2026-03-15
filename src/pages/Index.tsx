@@ -9,8 +9,8 @@ import NextBusWidget from "@/components/dashboard/NextBusWidget";
 
 const Index = () => {
   return (
-    <div className="grid h-svh grid-cols-12 gap-6 bg-background p-8 text-foreground">
-      {/* L1: The Glance — Clock + Weather + News */}
+    <div className="grid h-full grid-cols-12 gap-6">
+      {/* L1: Überblick — Uhr + Wetter + News */}
       <section className="col-span-4 flex flex-col gap-6">
         <ClockWidget />
         <WeatherWidget />
@@ -19,7 +19,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* L2: The Agenda — Calendar + Todos */}
+      {/* L2: Agenda — Kalender + Aufgaben */}
       <section className="col-span-5 flex flex-col gap-6">
         <div className="flex-1 rounded-2xl border border-border bg-card/40 p-6">
           <CalendarWidget />
@@ -29,7 +29,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* L3: The Controls — Spotify + Smart Home + Next Bus */}
+      {/* L3: Steuerung — Spotify + Smart Home + Nächster Bus */}
       <section className="col-span-3 flex flex-col gap-6">
         <SpotifyWidget />
         <SmartHomeWidget />

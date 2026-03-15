@@ -9,11 +9,14 @@ interface Toggle {
   active: boolean;
 }
 
+// Mock-Daten — später mit Philips Hue & Xiaomi Home APIs ersetzen
+// Hue API: https://developers.meethue.com/
+// Xiaomi: via Home Assistant oder eigene Bridge
 const initialToggles: Toggle[] = [
-  { id: "kitchen", label: "Kitchen", icon: Lightbulb, active: true },
-  { id: "living", label: "Living Room", icon: Lightbulb, active: false },
-  { id: "fan", label: "Fan", icon: Fan, active: false },
-  { id: "lock", label: "Front Door", icon: Lock, active: true },
+  { id: "kitchen", label: "Küche", icon: Lightbulb, active: true },
+  { id: "living", label: "Wohnzimmer", icon: Lightbulb, active: false },
+  { id: "fan", label: "Ventilator", icon: Fan, active: false },
+  { id: "lock", label: "Haustür", icon: Lock, active: true },
 ];
 
 const SmartHomeWidget = () => {
@@ -28,7 +31,7 @@ const SmartHomeWidget = () => {
   return (
     <div>
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-accent">
-        Home
+        Zuhause
       </h2>
       <div className="grid grid-cols-2 gap-3">
         {toggles.map((item) => (

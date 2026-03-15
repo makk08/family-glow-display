@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Music, Play, SkipForward, SkipBack } from "lucide-react";
 
+// Mock-Daten — später mit Spotify Web API ersetzen
+// API: https://developer.spotify.com/documentation/web-api
 const SpotifyWidget = () => {
   return (
     <motion.div

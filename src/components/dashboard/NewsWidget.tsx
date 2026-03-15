@@ -9,50 +9,51 @@ interface NewsItem {
   category: string;
 }
 
+// Mock-Daten — später mit RSS-Feed oder News-API ersetzen (z.B. SRF, 20 Minuten, Blick)
 const mockNews: NewsItem[] = [
   {
     id: "1",
-    title: "New Study Shows Benefits of Family Meal Planning",
-    source: "Health Today",
-    time: "2h ago",
-    category: "Health",
+    title: "Neue Tramstrecke in Zürich geplant – Baustart 2027",
+    source: "20 Minuten",
+    time: "vor 2 Std.",
+    category: "Lokal",
   },
   {
     id: "2",
-    title: "Smart Home Tech Trends for 2026",
-    source: "TechCrunch",
-    time: "3h ago",
-    category: "Tech",
+    title: "Bundesrat beschliesst neue Massnahmen für KI-Regulierung",
+    source: "SRF News",
+    time: "vor 3 Std.",
+    category: "Politik",
   },
   {
     id: "3",
-    title: "Weekend Weather: Sunny Skies Expected",
-    source: "Weather Central",
-    time: "4h ago",
-    category: "Weather",
+    title: "Frühling kommt: Temperaturen steigen nächste Woche",
+    source: "MeteoSchweiz",
+    time: "vor 4 Std.",
+    category: "Wetter",
   },
   {
     id: "4",
-    title: "Local Schools Announce Spring Break Dates",
-    source: "City News",
-    time: "5h ago",
-    category: "Local",
+    title: "ZSC Lions gewinnen entscheidendes Playoff-Spiel",
+    source: "Blick",
+    time: "vor 5 Std.",
+    category: "Sport",
   },
   {
     id: "5",
-    title: "Best Family-Friendly Recipes This Spring",
-    source: "Food Network",
-    time: "6h ago",
-    category: "Food",
+    title: "Migros lanciert neues veganes Sortiment in allen Filialen",
+    source: "Tages-Anzeiger",
+    time: "vor 6 Std.",
+    category: "Wirtschaft",
   },
 ];
 
 const categoryColors: Record<string, string> = {
-  Health: "bg-[hsl(160,45%,80%)]",
-  Tech: "bg-[hsl(260,55%,82%)]",
-  Weather: "bg-[hsl(200,70%,82%)]",
-  Local: "bg-[hsl(20,90%,85%)]",
-  Food: "bg-[hsl(340,60%,82%)]",
+  Lokal: "bg-[hsl(var(--pastel-peach))]",
+  Politik: "bg-[hsl(var(--pastel-lavender))]",
+  Wetter: "bg-[hsl(var(--pastel-sky))]",
+  Sport: "bg-[hsl(var(--pastel-mint))]",
+  Wirtschaft: "bg-[hsl(var(--pastel-rose))]",
 };
 
 const NewsWidget = () => {
@@ -61,7 +62,7 @@ const NewsWidget = () => {
       <div className="flex items-center gap-2">
         <Newspaper className="h-4 w-4 text-primary" />
         <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-          Headlines
+          Schlagzeilen
         </h2>
       </div>
       <div className="flex flex-col gap-2">
