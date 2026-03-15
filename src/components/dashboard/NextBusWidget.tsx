@@ -21,7 +21,10 @@ const getMockDepartures = (): Departure[] => {
       line: "31",
       direction: "Hegibachplatz",
       minutesUntil: 2,
-      scheduledTime: new Date(now.getTime() + 2 * 60000).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" }),
+      scheduledTime: new Date(now.getTime() + 2 * 60000).toLocaleTimeString("de-CH", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       lineColor: "bg-[hsl(210,70%,65%)]",
     },
     {
@@ -29,7 +32,10 @@ const getMockDepartures = (): Departure[] => {
       line: "7",
       direction: "Wollishofen",
       minutesUntil: 5,
-      scheduledTime: new Date(now.getTime() + 5 * 60000).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" }),
+      scheduledTime: new Date(now.getTime() + 5 * 60000).toLocaleTimeString("de-CH", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       lineColor: "bg-[hsl(0,60%,60%)]",
     },
     {
@@ -37,7 +43,10 @@ const getMockDepartures = (): Departure[] => {
       line: "13",
       direction: "Albisgütli",
       minutesUntil: 8,
-      scheduledTime: new Date(now.getTime() + 8 * 60000).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" }),
+      scheduledTime: new Date(now.getTime() + 8 * 60000).toLocaleTimeString("de-CH", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       lineColor: "bg-[hsl(45,80%,55%)]",
     },
     {
@@ -45,13 +54,16 @@ const getMockDepartures = (): Departure[] => {
       line: "31",
       direction: "Schlieren",
       minutesUntil: 12,
-      scheduledTime: new Date(now.getTime() + 12 * 60000).toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" }),
+      scheduledTime: new Date(now.getTime() + 12 * 60000).toLocaleTimeString("de-CH", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       lineColor: "bg-[hsl(210,70%,65%)]",
     },
   ];
 };
 
-const STATION_NAME = "Zürich, Paradeplatz"; // Change to your stop
+const STATION_NAME = "Zürich, Gutstrasse"; // Change to your stop
 
 const NextBusWidget = () => {
   const [departures, setDepartures] = useState<Departure[]>(getMockDepartures());
@@ -76,9 +88,7 @@ const NextBusWidget = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bus className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-            Next Bus
-          </h2>
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">Next Bus</h2>
         </div>
         <button
           onClick={refresh}
@@ -107,18 +117,14 @@ const NextBusWidget = () => {
             >
               {dep.line}
             </span>
-            <span className="flex-1 truncate text-sm font-medium text-foreground">
-              {dep.direction}
-            </span>
+            <span className="flex-1 truncate text-sm font-medium text-foreground">{dep.direction}</span>
             <div className="flex items-center gap-1.5 text-right">
               {dep.minutesUntil <= 1 ? (
                 <span className="text-sm font-bold text-primary animate-pulse">now</span>
               ) : (
                 <>
                   <Clock className="h-3 w-3 text-muted-foreground" />
-                  <span className="text-sm font-semibold text-foreground">
-                    {dep.minutesUntil}'
-                  </span>
+                  <span className="text-sm font-semibold text-foreground">{dep.minutesUntil}'</span>
                 </>
               )}
             </div>
