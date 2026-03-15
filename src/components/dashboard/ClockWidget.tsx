@@ -11,8 +11,8 @@ const ClockWidget = () => {
   const hours = time.getHours().toString().padStart(2, "0");
   const minutes = time.getMinutes().toString().padStart(2, "0");
 
-  const dayName = time.toLocaleDateString("en-US", { weekday: "long" });
-  const date = time.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+  const dayName = time.toLocaleDateString("de-CH", { weekday: "long" });
+  const date = time.toLocaleDateString("de-CH", { day: "numeric", month: "long" });
 
   return (
     <div className="flex flex-col">
