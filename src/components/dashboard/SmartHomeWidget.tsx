@@ -1,57 +1,55 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Lightbulb, Fan, Lock, Thermometer } from "lucide-react";
-
-interface Toggle {
-  id: string;
-  label: string;
-  icon: typeof Lightbulb;
-  active: boolean;
-}
-
-// Mock-Daten — später mit Philips Hue & Xiaomi Home APIs ersetzen
-// Hue API: https://developers.meethue.com/
-// Xiaomi: via Home Assistant oder eigene Bridge
-const initialToggles: Toggle[] = [
-  { id: "kitchen", label: "Küche", icon: Lightbulb, active: true },
-  { id: "living", label: "Wohnzimmer", icon: Lightbulb, active: false },
-  { id: "fan", label: "Ventilator", icon: Fan, active: false },
-  { id: "lock", label: "Haustür", icon: Lock, active: true },
-];
+import { useQueryClient } from "@tanstack/react-query";
+import { useHueLights } from "@/hooks/useHueLights";
+import { toggleHueRoom } from "@/lib/hue/api";
 
 const SmartHomeWidget = () => {
-  const [toggles, setToggles] = useState(initialToggles);
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useHueLights();
 
-  const toggle = (id: string) => {
-    setToggles((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, active: !t.active } : t))
-    );
+  const handleToggle = async (id: string, currentState: boolean) => {
+    await toggleHueRoom(id, !currentState);
+    await queryClient.invalidateQueries({ queryKey: ["hue-rooms"] });
   };
 
   return (
-    <div>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-accent">
-        Zuhause
-      </h2>
-      <div className="grid grid-cols-2 gap-3">
-        {toggles.map((item) => (
-          <motion.button
-            key={item.id}
-            whileTap={{ scale: 0.93 }}
-            onClick={() => toggle(item.id)}
-            className={`touch-target flex flex-col items-center justify-center gap-2 rounded-2xl border p-5 transition-colors duration-200 ${
-              item.active
-                ? "border-accent bg-accent text-accent-foreground"
-                : "border-border bg-card text-muted-foreground"
-            }`}
-          >
-            <item.icon className="h-7 w-7" />
-            <span className="text-xs font-bold uppercase tracking-wider">
-              {item.label}
-            </span>
-          </motion.button>
-        ))}
-      </div>
+    <div className="rounded-2xl border border-border bg-card/40 p-5">
+      <p className="text-sm font-semibold uppercase tracking-widest text-accent">
+        Smart Home
+      </p>
+
+      {isLoading && (
+        <p className="mt-4 text-sm text-muted-foreground">
+          Räume werden geladen...
+        </p>
+      )}
+
+      {error && (
+        <p className="mt-4 text-sm text-destructive">
+          Hue konnte nicht geladen werden
+        </p>
+      )}
+
+      {data && (
+        <div className="mt-4 space-y-3">
+          {data.map((room) => (
+            <button
+              key={room.id}
+              onClick={() => handleToggle(room.id, room.isOn)}
+              className="flex w-full items-center justify-between rounded-xl bg-secondary/70 px-4 py-3"
+            >
+              <span className="text-sm font-medium">
+                {room.name}
+              </span>
+
+              <span
+                className={`h-3 w-3 rounded-full ${
+                  room.isOn ? "bg-green-500" : "bg-muted"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
