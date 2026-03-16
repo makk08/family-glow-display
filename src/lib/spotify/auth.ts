@@ -1,5 +1,10 @@
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const REDIRECT_URI = "http://127.0.0.1:5173";
+
+const REDIRECT_URI =
+  window.location.port === "5173"
+    ? "http://127.0.0.1:5173/callback"
+    : "http://127.0.0.1:4173/callback";
+
 const SCOPES = [
   "user-read-playback-state",
   "user-read-currently-playing",
@@ -83,15 +88,15 @@ export async function exchangeCodeForToken(code: string) {
   }
 
   const data = await response.json();
-
   const expiresAt = Date.now() + data.expires_in * 1000;
 
   localStorage.setItem("spotify_access_token", data.access_token);
+
   if (data.refresh_token) {
     localStorage.setItem("spotify_refresh_token", data.refresh_token);
   }
-  localStorage.setItem("spotify_expires_at", String(expiresAt));
 
+  localStorage.setItem("spotify_expires_at", String(expiresAt));
   localStorage.removeItem("spotify_code_verifier");
 
   return data.access_token as string;
@@ -159,4 +164,5 @@ export function logoutSpotify() {
   localStorage.removeItem("spotify_refresh_token");
   localStorage.removeItem("spotify_expires_at");
   localStorage.removeItem("spotify_code_verifier");
+  localStorage.removeItem("spotify_code");
 }
