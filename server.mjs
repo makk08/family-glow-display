@@ -12,13 +12,21 @@ const PORT = Number(process.env.PORT || 4173);
 const CALENDAR_ICS_URL = process.env.CALENDAR_ICS_URL;
 const NEWS_RSS_URL =
   process.env.NEWS_RSS_URL || "https://www.srf.ch/news/bnf/rss/1646";
+const HUE_BRIDGE_IP = process.env.HUE_BRIDGE_IP;
+const HUE_USERNAME = process.env.HUE_USERNAME;
 
 if (!CALENDAR_ICS_URL) {
   console.error("Missing CALENDAR_ICS_URL in environment");
   process.exit(1);
 }
 
+if (!HUE_BRIDGE_IP || !HUE_USERNAME) {
+  console.error("Missing HUE_BRIDGE_IP or HUE_USERNAME in environment");
+  process.exit(1);
+}
+
 app.disable("x-powered-by");
+app.use(express.json());
 
 app.get("/health", (_req, res) => {
   res.json({ ok: true });
@@ -41,6 +49,18 @@ app.use(
     changeOrigin: true,
     secure: true,
     pathRewrite: () => "",
+  })
+);
+
+app.use(
+  "/api/hue",
+  createProxyMiddleware({
+    target: `http://${HUE_BRIDGE_IP}/api/${HUE_USERNAME}`,
+    changeOrigin: true,
+    secure: false,
+    pathRewrite: {
+      "^/api/hue": "",
+    },
   })
 );
 

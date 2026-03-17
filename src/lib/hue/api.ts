@@ -1,14 +1,7 @@
 import type { HueRoom } from "@/types/hue";
 
-const BRIDGE_IP = import.meta.env.VITE_HUE_BRIDGE_IP;
-const USERNAME = import.meta.env.VITE_HUE_USERNAME;
-
 function getHueBaseUrl() {
-  if (!BRIDGE_IP || !USERNAME) {
-    throw new Error("Hue Bridge IP oder Username fehlt in .env");
-  }
-
-  return `http://${BRIDGE_IP}/api/${USERNAME}`;
+  return "/api/hue";
 }
 
 export async function fetchHueRooms(): Promise<HueRoom[]> {
@@ -59,5 +52,11 @@ export async function toggleHueRoom(id: string, nextState: boolean) {
     throw new Error(`Hue Raum konnte nicht geändert werden: ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  if (Array.isArray(data) && data[0]?.error) {
+    throw new Error(data[0].error.description || "Hue Fehler");
+  }
+
+  return data;
 }
