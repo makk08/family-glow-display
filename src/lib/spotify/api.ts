@@ -1,4 +1,7 @@
-import { getValidSpotifyToken } from "@/lib/spotify/auth";
+import {
+  getValidSpotifyToken,
+  refreshSpotifyToken,
+} from "@/lib/spotify/auth";
 
 export type SpotifyNowPlaying = {
   isPlaying: boolean;
@@ -10,20 +13,32 @@ export type SpotifyNowPlaying = {
   durationMs: number;
 };
 
-async function spotifyFetch(path: string, init?: RequestInit) {
-  const token = await getValidSpotifyToken();
+async function spotifyFetch(path: string, init?: RequestInit, retry = true) {
+  let token = await getValidSpotifyToken();
 
   if (!token) {
     throw new Error("NOT_AUTHENTICATED");
   }
 
-  const response = await fetch(`https://api.spotify.com/v1${path}`, {
+  let response = await fetch(`https://api.spotify.com/v1${path}`, {
     ...init,
     headers: {
       Authorization: `Bearer ${token}`,
       ...(init?.headers || {}),
     },
   });
+
+  if (response.status === 401 && retry) {
+    token = await refreshSpotifyToken();
+
+    response = await fetch(`https://api.spotify.com/v1${path}`, {
+      ...init,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        ...(init?.headers || {}),
+      },
+    });
+  }
 
   return response;
 }
@@ -48,7 +63,8 @@ export async function fetchNowPlaying(): Promise<SpotifyNowPlaying | null> {
   return {
     isPlaying: !!data.is_playing,
     trackName: data.item.name ?? "",
-    artistName: data.item.artists?.map((a: { name: string }) => a.name).join(", ") ?? "",
+    artistName:
+      data.item.artists?.map((a: { name: string }) => a.name).join(", ") ?? "",
     albumName: data.item.album?.name ?? "",
     albumImageUrl: data.item.album?.images?.[0]?.url ?? "",
     progressMs: data.progress_ms ?? 0,

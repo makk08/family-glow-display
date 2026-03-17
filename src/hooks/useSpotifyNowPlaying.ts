@@ -8,5 +8,6 @@ export function useSpotifyNowPlaying() {
     refetchInterval: 10000,
     staleTime: 5000,
     retry: false,
+    refetchOnWindowFocus: true,
   });
 }
